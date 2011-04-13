@@ -28,7 +28,10 @@ module Ankusa
 
       TextHash.new(text).each { |word, count|
         probs = get_word_probs(word, classnames)
-        classnames.each { |k| result[k] += (Math.log(probs[k]) * count) }
+        classnames.each { |k| 
+			result[k] += (Math.log(probs[k]) * count) unless probs[k] < 1
+			result[k] += count if probs[k] < 1
+		}
       }
 
       # add the prior and exponentiate
